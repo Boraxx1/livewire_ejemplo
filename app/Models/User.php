@@ -59,4 +59,33 @@ class User extends Authenticatable implements PasskeyUser
             ? Str::substr($initials, 0, 1).Str::substr($initials, -1)
             : $initials;
     }
+    public function perfil()
+    {
+        return $this->hasOne(Perfil::class, 'user_id');
+    }
+
+    public function roles()
+    {
+        // Se especifica 'rol_id' porque asi se llama tu columna en la base de datos
+        return $this->belongsTo(Role::class, 'rol_id');
+    }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
+
+    public function postulaciones()
+    {
+        return $this->hasMany(Postulacion::class, 'user_id');
+    }
+
+    Public function isAdmin(): bool
+    {
+        return $this->roles?->nombre === 'Administrador';
+    }
 }
+
+
+
+    
